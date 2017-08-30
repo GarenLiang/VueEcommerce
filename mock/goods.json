@@ -1,0 +1,24 @@
+{
+  "status":"0",
+  "msg":"",
+  "result":[
+    {
+        "productId":"10001",
+        "productName":"Poster",
+        "productPrice":"49.99",
+        "productImg":"1.png"
+    },
+    {
+      "productId":"10002",
+      "productName":"Cup",
+      "productPrice":"19.99",
+      "productImg":"2.png"
+    },
+    {
+      "productId":"10003",
+      "productName":"Baseball Hat",
+      "productPrice":"29.99",
+      "productImg":"3.png"
+    }
+  ]
+}

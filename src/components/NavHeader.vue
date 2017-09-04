@@ -13,7 +13,7 @@
               <img class="navbar-brand-logo" src="static/logo.png" style="margin-top:16px;padding-left:80px"></a>
           </div>
           <div class="navbar-right-container" style="position:absolute;right:0;top:25%;height:50px;width:50px;">
-            <div class="navbar-menu-container">
+            <diav class="navbar-menu-container">
               <!--<a href="/" class="navbar-link">我的账户</a>-->
               <span class="navbar-link"></span>
               <a href="javascript:void(0)" class="navbar-link">Login</a>

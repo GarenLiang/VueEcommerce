@@ -37,13 +37,13 @@
                       <div class="name">{{item.productName}}</div>
                       <div class="price">{{item.salePrice}}</div>
                       <div class="btn-area">
-                        <a href="javascript:;" class="btn btn--m">加入购物车</a>
+                        <a href="javascript:;" class="btn btn--m" @click="addCart(item.productId)">加入购物车</a>
                       </div>
                     </div>
                   </li>
                 </ul>
                 <div class="load-more" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="30">
-                  Loading...
+                  <img src="../../static/loading-svg/Pacman.svg" v-show="loading">
               </div>
               </div>
             </div>
@@ -83,6 +83,7 @@
         page:1,
         pageSize:8,
         busy:true,
+        loading:false,
         priceFilter:[
           {
             startPrice:'0.00',
@@ -115,12 +116,15 @@
         var param = {
           page:this.page,
           pageSize:this.pageSize,
-          sort:this.sortFlag?1:-1
+          sort:this.sortFlag?1:-1,
+          priceLevel:this.priceChecked
         }
+        this.loading = true;
         axios.get("/goods",{
           params:param
         }).then((response)=> {
           let res = response.data;
+          this.loading = true;
           if(res.status=="0") {
             if(flag){
               this.goodsList = this.goodsList.concat(res.result.list);
@@ -150,13 +154,24 @@
             this.getGoodsList(true);
           }, 1000);
         },
+        addCart(productId){
+           axios.post('/goods/addCart',{
+               productId:productId
+           }).then((res)=>{
+               if(res.data.status=='0'){
+                   alert('Success')
+               }
+           })
+       },
       showFilterPop(){
         this.filterBy = true;
         this.overLayFlag = true;
       },
       setPriceFilter(index) {
         this.priceChecked = index;
-        this.closePop();
+        // this.closePop();
+        this.page = 1;
+        this.getGoodsList();
       },
       closePop(){
         this.filterBy = false;

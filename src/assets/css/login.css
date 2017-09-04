@@ -33,7 +33,7 @@ a {
   transition: color .3s ease-out;
 }
 .navbar-right-container {
-  display: none;
+  /*display: none;*/
   justify-content: flex-start;
   align-items: center;
 }

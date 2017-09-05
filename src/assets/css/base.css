@@ -419,7 +419,7 @@ a {
 }
 
 a:hover {
-  color: #d1434a;
+  color: #ffdd00;
   -webkit-transition: color .3s ease-out;
   transition: color .3s ease-out;
 }
@@ -458,11 +458,11 @@ a:hover {
 }
 
 .nav-breadcrumb a:hover {
-  color: #d1434a;
+  color: #ffdd00;
 }
 
 .nav-breadcrumb span {
-  color: #d1434a;
+  color: #ffdd00;
 }
 
 /** 普通页面标题 **/
@@ -612,28 +612,29 @@ a:hover {
   font-weight: bold;
   -webkit-transition: all .3s ease-out;
   transition: all .3s ease-out;
-  border: 1px solid #d1434a;
-  color: #d1434a;
+  border: 1px solid #FFA500;
+  border-radius: 10px;
+  color: #FFA500;
   text-transform: uppercase;
   letter-spacing: .25em;
   white-space: nowrap;
 }
 
 .btn:hover, .btn[href]:hover {
-  background-color: #ffe5e6;
+  background-color: #FFE4B5;
   -webkit-transition: all .3s ease-out;
   transition: all .3s ease-out;
 }
 
 .btn--red, .btn--red[href] {
-  background-color: #d1434a;
-  border-color: #d1434a;
+  background-color: #ffdd00;
+  border-color: #ffdd00;
   color: #fff;
 }
 
 .btn--red:hover, .btn--red[href]:hover {
-  background-color: #f16f75;
-  border-color: #f16f75;
+  background-color: #ffdd00;
+  border-color: #ffdd00;
   color: #fff;
 }
 

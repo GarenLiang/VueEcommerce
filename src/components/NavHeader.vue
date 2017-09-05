@@ -18,13 +18,16 @@
               <span class="navbar-link"></span>
               <span v-text="nickName" v-if="nickName"></span>
               <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-if="!nickName">Login</a>
-              <a href="javascript:void(0)" class="navbar-link" @click="loginModalFlag=true" v-if="nickName">Logout</a>
+              <a href="javascript:void(0)" class="navbar-link" @click="logOut" v-if="nickName">Logout</a>
               <div class="navbar-cart-container">
                 <span class="navbar-cart-count"></span>
                 <a class="navbar-link navbar-cart-link" href="/#/cart">
-                  <svg class="navbar-cart-logo" width="25" height="25">
+                  <!-- <svg class="navbar-cart-logo" width="25" height="25">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
-                  </svg>
+                  </svg> -->
+
+                <img class="navbar-cart-logo" src="static/carrier.png" width="25" height="25"/>
+
                 </a>
               </div>
             </div>
@@ -100,7 +103,15 @@ export default {
             this.errorTip=true;
           }
         })
-      }
+      },
+      logOut(){
+           axios.post('/users/logout').then((response)=>{
+             let res=response.data;
+             if(res.status=='0'){
+               this.nickName='';
+             }
+           })
+        }
     }
 }
 </script>

@@ -24,6 +24,23 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function (req,res,next) {
+  if(req.cookies.userId){
+    next();
+  }else{
+    //  req.originalUrl拿到的是一级的、不带参数的
+      if(req.originalUrl=='/users/login' || req.originalUrl=='/users/logout' || req.originalUrl.indexOf('/goods/list')>-1){
+          next();
+      }else{
+          res.json({
+            status:'10001',
+            msg:'当前未登录',
+            result:''
+          });
+      }
+  }
+});
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/goods', goods);

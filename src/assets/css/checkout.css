@@ -151,12 +151,12 @@ html {
 }
 
 .check-step li.cur {
-  border-color: #d1434a;
-  color: #d1434a;
+  border-color: #ffdd00;
+  color: #ffdd00;
 }
 
 .check-step li.cur:after {
-  background: #d1434a;
+  background: #ffdd00;
 }
 
 @media only screen and (max-width: 991px) {
@@ -1065,7 +1065,7 @@ html {
 }
 
 .tee_tips_pop .tee_pop_box .price {
-  color: #d1434a;
+  color: #ffdd00;
 }
 
 @media only screen and (max-width: 991px) {
@@ -1145,7 +1145,7 @@ html {
 
 .order-create-main .checkout-share-order .checkout-share-tit {
   font-size: 1.44em;
-  color: #e02614;
+  color: #ffdd00;
   font-weight: 200;
 }
 
@@ -1156,7 +1156,7 @@ html {
 .order-create-main .checkout-share-main button {
   margin: 0 5%;
   padding: 20px 0;
-  color: #e02614;
+  color: #ffdd00;
 }
 
 .order-create-main .checkout-share-main button:hover {
@@ -1172,7 +1172,7 @@ html {
 .order-create-main .checkout-share-main .checkout-share-icon .icon {
   width: 100%;
   height: 100%;
-  fill: #e02614;
+  fill: #ffdd00;
 }
 
 .order-create-main .checkout-share-main .checkout-share-twitter {
@@ -1368,7 +1368,7 @@ html {
 
 .cart-foot-wrap .item-total .total-price {
   margin-left: 6px;
-  color: #d1434a;
+  color: #ffdd00;
   font-size: 1.125em;
   font-weight: bold;
   line-height: 1.2;

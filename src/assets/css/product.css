@@ -272,7 +272,7 @@
 }
 
 .filter .filter-category ul > li > ul .icon-arrow-down {
-  display: none;
+  /*display: none;*/
 }
 
 .filter .filter-category a:hover .icon-arrow-down {
@@ -484,6 +484,7 @@
 .icon-arrow-short {
   width: 11px;
   height: 11px;
+  transition: all .3s ease-out;
 }
 
 .page-title-accessory {
@@ -508,9 +509,9 @@
 
 .accessory-title .accessory-more-link .icon-arrow-short {
   margin-left: 15px;
-  -webkit-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  transform: rotate(-90deg);
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 .accessory-title .accessory-more-link:hover {

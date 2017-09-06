@@ -9,7 +9,13 @@
           <div class="filter-nav">
             <span class="sortby">Sort by:</span>
             <a href="javascript:void(0)" class="default cur">Default</a>
-            <a href="javascript:void(0)" class="price">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
+            <a @click="sortGoods" href="javascript:void(0)" class="price">
+              Price
+              <!-- <svg class="icon-arrow-short" v-bind:class="{'sort-up':!sortFlag}">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-arrow-short"></use>
+              </svg> -->
+              <img v-bind:class="{'sort-up':!sortFlag}" class="icon-arrow-short" src="static/up-arrow.png" width="11" height="11"/>
+            </a>
             <a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
           </div>
           <div class="accessory-result">
@@ -53,6 +59,26 @@
         </div>
       </div>
       <div class="md-overlay" v-show="overLayFlag" @click="closePop"></div>
+      <modal v-bind:mdShow='mdShow' v-on:close='closeModal'>
+
+           <p slot="message">
+               Please Login
+           </p>
+           <div slot="btnGroup">
+               <a class="btn btn--m" href="javascript:;" @click="mdShow=false">Close</a>
+           </div>
+       </modal>
+       <modal v-bind:mdShow='mdShowCart' v-on:close='closeModal'>
+
+            <p slot="message">
+                <img class="icon-status-ok" src="static/checked.png">
+                <span>Successfully add item</span>
+            </p>
+            <div slot="btnGroup">
+                <a class="btn btn--m" @click="mdShowCart=false">Continue to Buy</a>
+                <router-link class="btn btn--m" href="javascript:;" to="/cart">Check Cart</router-link>
+            </div>
+        </modal>
       <nav-footer></nav-footer>
     </div>
 </template>
@@ -69,6 +95,11 @@
     line-height: 100px;
     text-align: center;
   }
+  .sort-up {
+    transform:rotate(180deg);
+    transition: all .3s ease-out;
+  }
+
 </style>
 <script>
   import './../assets/css/base.css'
@@ -76,6 +107,7 @@
   import NavHeader from '@/components/NavHeader.vue'
   import NavFooter from '@/components/NavFooter.vue'
   import NavBread from '@/components/NavBread.vue'
+  import Modal from '@/components/Modal.vue'
   import axios from 'axios'
   export default{
     data(){
@@ -86,6 +118,8 @@
         pageSize:8,
         busy:true,
         loading:false,
+        mdShow:false,
+        mdShowCart:false,
         priceFilter:[
           {
             startPrice:'0.00',
@@ -108,7 +142,8 @@
     components:{
       NavHeader,
       NavFooter,
-      NavBread
+      NavBread,
+      Modal,
     },
     mounted: function() {
       this.getGoodsList();
@@ -161,7 +196,9 @@
                productId:productId
            }).then((res)=>{
                if(res.data.status=='0'){
-                   alert('Success')
+                   this.mdShowCart = true;
+               }else{
+                 this.mdShow = true;
                }
            })
        },
@@ -178,7 +215,10 @@
       closePop(){
         this.filterBy = false;
         this.overLayFlag = false;
-      }
+      },
+      closeModal(){
+        this.mdShow = false;
+      },
     }
   }
 </script>

@@ -87,7 +87,7 @@ a {
   height: 29px;
   margin: 6px 0 0 14px;
   background-position: 4px 5px;
-  background-image: url("/static/icon.png");
+  /*background-image: url("/static/icon.png");*/
   background-repeat: no-repeat;
 }
 .regi_form_input .IconPwd {
@@ -124,15 +124,16 @@ a {
   display: block;
   height: 38px;
   line-height: 38px;
-  border: 2px solid #009de6;
-  background: #009de6;
+  border: 2px solid #ffdd00;
+  background: #ffdd00;
   color: #fff;
   font-size: 18px;
   text-align: center;
+  border-radius: 10px;
 }
 .btn-login:hover {
-  background: #61b1ef;
-  border: 2px solid #61b1ef;
+  background: #FFE4B5;
+  border: 2px solid #FFE4B5;
 }
 .error-wrap .error{
   font-size: 12px;

@@ -1092,9 +1092,9 @@ html {
   top: 16px;
   left: -4px;
   content: "";
-  width: 44px;
-  height: 3px;
-  background: #d7d8dd;
+  width: 32px;
+  height: 32px;
+  background: url(./plus.png);
   -webkit-transition: -webkit-transform .5s ease-out;
   transition: -webkit-transform .5s ease-out;
   transition: transform .5s ease-out;
@@ -1224,6 +1224,7 @@ html {
 
 .md-modal-transition.md-show {
   visibility: visible;
+  border-radius: 10px;
 }
 
 .md-modal-transition.md-show .md-modal-inner {
@@ -1233,6 +1234,7 @@ html {
   opacity: 1;
   -webkit-transition: all .5s ease-out;
   transition: all .5s ease-out;
+  border-radius: 10px;
 }
 
 @media only screen and (max-width: 767px) {
@@ -1245,7 +1247,7 @@ html {
   }
 
   .md-modal .md-close {
-    display: none;
+    /*display: none;*/
   }
 
   .md-modal .md-tit {

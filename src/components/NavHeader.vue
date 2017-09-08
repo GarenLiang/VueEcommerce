@@ -36,6 +36,7 @@
            <div class="md-top">
              <div class="md-title">Login in</div>
              <button class="md-close" @click="loginModalFlag=false">Close</button>
+             <!-- <img src="static/cancel.png" class="md-close" @click="loginModalFlag=false">Close<img> -->
            </div>
            <div class="md-content">
              <div class="confirm-tips">
@@ -45,19 +46,19 @@
                </div>
                <ul>
                  <li class="regi_form_input">
-                   <i class="icon IconPeople"></i>
+                   <img class="icon IconPeople" src="static/sun-umbrella.png">
                    <!-- 双向绑定 -->
                    <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input regi_login_input_left" placeholder="User Name" data-type="loginname">
                  </li>
                  <li class="regi_form_input noMargin">
-                   <i class="icon IconPwd"></i>
+                   <img class="icon IconPwd" src="static/icecream.png">
                    <input type="password" tabindex="2"  name="password" v-model="userPwd" class="regi_login_input regi_login_input_left login-input-no input_text" placeholder="Password" @keyup.enter="login">
                  </li>
                </ul>
              </div>
              <div class="login-wrap">
                <!-- 调用login方法 -->
-               <a href="javascript:;" class="btn-login" @click="login">登  录</a>
+               <a href="javascript:;" class="btn-login" @click="login">Login</a>
              </div>
            </div>
          </div>

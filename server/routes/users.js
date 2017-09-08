@@ -99,4 +99,35 @@ router.get('/cartlist', function (req, res, next) {
     }
   })
 })
+
+// 购物车删除
+router.post('/cart/del',function(req,res,next){
+  var userId=req.cookies.userId;
+  var productId=req.body.productId;
+  // 先根据cookie中的用户id查询用户，再根据前端传递来的商品id从购物车中找到并删除
+  User.update({
+    userId:userId
+  },{
+    $pull:{
+      'cartList':{
+        'productId':productId
+      }
+    }
+  },function(err,doc){
+    if(err){
+      res.json({
+          status: '1',
+          msg: err.message,
+          result: ''
+      })
+    }else{
+      res.json({
+          status: '0',
+          msg: '',
+          result:'success'
+      })
+    }
+  }
+)
+})
 module.exports = router;

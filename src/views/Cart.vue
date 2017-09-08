@@ -76,7 +76,7 @@
                  </div>
                </div>
                <div class="cart-tab-2">
-                 <div class="item-price">{{item.salePrice}}</div>
+                 <div class="item-price">{{parseFloat(item.salePrice).toFixed(2)}}</div>
                </div>
                <div class="cart-tab-3">
                  <div class="item-quantity">
@@ -94,7 +94,7 @@
                </div>
                <div class="cart-tab-5">
                  <div class="cart-item-opration">
-                   <a href="javascript:;" class="item-edit-btn" @click="delCartConfirm(item)">
+                   <a href="javascript:;" class="item-edit-btn" @click="delCartConfirm(item.productId)">
                      <svg class="icon icon-del">
                        <use xlink:href="#icon-del"></use>
                      </svg>
@@ -129,19 +129,40 @@
        </div>
      </div>
    </div>
-   <modal v-bind:mdShow="modalConfirm" v-on:close="closeModal()">
+   <Modal v-bind:mdShow="modalConfirm" v-on:close="closeModal()">
      <p slot="message">你确定要删除吗？</p>
-     <div slot="btnGroup" :mdShow="modalConfirm" @close="closeModal">
+     <div slot="btnGroup">
        <a href="javascript:;" class="btn btn--m" @click="delCart()">确认</a>
-       <a href="javascript:;" class="btn btn--m btn--red" @click="modalConfirm=false">关闭</a>
+       <a href="javascript:;" class="btn btn--m" @click="modalConfirm=false">关闭</a>
 
      </div>
-   </modal>
+   </Modal>
    <nav-footer></nav-footer>
  </div>
 </template>
 <style>
-
+.input-sub,.input-add{
+  min-width: 40px;
+  height: 100%;
+  border: 0;
+  color: #605F5F;
+  text-align: center;
+  font-size: 16px;
+  overflow: hidden;
+  display: inline-block;
+  background: #f0f0f0;
+}
+.item-quantity .select-self-area{
+  background:none;
+  border: 1px solid #f0f0f0;
+}
+.item-quantity .select-self-area .select-ipt{
+  display: inline-block;
+  padding:0 3px;
+  width: 30px;
+  min-width: 30px;
+  text-align: center;
+}
 </style>
 <script>
   import './../assets/css/checkout.css'
@@ -151,39 +172,123 @@
   import Modal from '../components/Modal'
   import axios from 'axios'
   export default{
-    data(){
-      return{
-        cartList:[],
-        modalConfirm:false
-      }
-    },
-    components: {
-        NavHeader,
-        NavFooter,
-        NavBread,
-        Modal
-    },
-    mounted(){
-      this.init();
-    },
-    data(){
-      return{
-        cartList:[]
-      }
-    },
-    methods:{
-      init(){
-        axios.get('/users/cartList').then(response=>{
-          var res = response.data;
-          this.cartList = res.result;
-        })
-      },
-      delCartConfirm(){
 
-      },
-      delCart(){
-        
-      }
-    }
-  }
+    data(){
+         return{
+           cartList: [],
+           modalConfirm: false,
+           // productId: '',
+           delItem:{},
+         }
+     },
+     mounted(){
+       this.init();
+     },
+     computed:{
+       checkAllFlag(){
+         return this.checkedCount == this.cartList.length;
+       },
+       checkedCount(){
+         var i = 0;
+         this.cartList.forEach((item)=>{
+           if(item.checked=='1')i++;
+         })
+         return i;
+       },
+       totalPrice(){
+         var money = 0;
+         this.cartList.forEach((item)=>{
+           if(item.checked=='1'){
+             money += parseFloat(item.salePrice)*parseInt(item.productNum);
+           }
+         })
+         return money;
+       }
+     },
+     components: {
+       NavHeader,
+       NavFooter,
+       NavBread,
+       Modal
+     },
+
+     methods:{
+       init(){
+         axios.get('/users/cartList').then((response)=>{
+           let res = response.data;
+           this.cartList = res.result;
+           // console.log(this.cartList)
+         });
+       },
+       delCartConfirm(item){
+         this.modalConfirm = true;
+         this.delItem= item;
+       },
+       delCart(){
+         axios.post('/users/cartDel',{
+           productId: this.delItem.productId
+         }).then((response)=>{
+           let res = response.data;
+           if(res.status=='0'){
+             this.modalConfirm = false;
+             var delCount = this.delItem.productNum;
+             this.$store.commit("updateCartCount",-delCount);
+             this.init();
+           }
+         });
+       },
+       closeModal(){
+         this.modalConfirm = false;
+       },
+       editCart(flag, item){
+         if(flag=='+1'){
+           item.productNum++
+         }else if(flag=='-1'){
+           if(item.productNum<=1){
+             return;
+           }else{
+             item.productNum--;
+           }
+         }else{
+           item.checked = item.checked==1 ? 0:1;
+         }
+         axios.post('/users/cartEdit',{
+           productId: item.productId,
+           productNum: item.productNum,
+           checked: item.checked
+         }).then((response)=>{
+           let num =  0;
+           let res = response.data;
+           if(flag=='+1'){
+             num = 1;
+           }else if(flag == '-1'){
+             num = -1;
+           }
+           this.$store.commit('updateCartCount', num)
+         });
+       },
+       toggleCheckAll(){
+         var flag = !this.checkAllFlag;
+         this.cartList.forEach((item)=>{
+           item.checked = flag?'1':'0';
+         })
+         axios.post("/users/editCheckAll",{
+           checkAll:flag
+         }).then((response)=>{
+             let res = response.data;
+             if(res.status=='0'){
+                 console.log("update suc");
+             }
+         })
+       },
+       checkOut(){
+         if(this.checkedCount>0){
+           this.$router.push({
+             path: '/address'
+           })
+         }
+       },
+     }
+ }
+
 </script>

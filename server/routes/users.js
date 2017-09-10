@@ -101,7 +101,7 @@ router.get('/cartlist', function (req, res, next) {
 })
 
 // 购物车删除
-router.post('/cart/del',function(req,res,next){
+router.post('/cartDel',function(req,res,next){
   var userId=req.cookies.userId;
   var productId=req.body.productId;
   // 先根据cookie中的用户id查询用户，再根据前端传递来的商品id从购物车中找到并删除
@@ -129,5 +129,68 @@ router.post('/cart/del',function(req,res,next){
     }
   }
 )
+})
+
+router.post("/cartEdit", function (req,res,next) {
+  var userId = req.cookies.userId,
+         productId = req.body.productId,
+         productNum = req.body.productNum,
+         checked = req.body.checked;
+  User.update({"userId":userId,"cartList.productId":productId},{
+    "cartList.$.productNum": productNum,
+    "cartList.$.checked": checked,
+  },function(err, doc) {
+    if(err){
+      res.json({
+          status: '1',
+          msg: err.message,
+          result: ''
+      })
+    }else{
+      res.json({
+          status: '0',
+          msg: '',
+          result:'success'
+      })
+    }
+  })
+});
+router.post('/editCheckAll', function (req, res, next) {
+  var userId = req.cookies.userId,
+    checkAll = req.body.checkAll ? '1' : '0';
+  User.findOne({
+    userId: userId
+  }, function (err, user) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      if (user) {
+        user.cartList.forEach((item) => {
+          item.checked = checkAll;
+        })
+        user.save(function (err1, doc1) {
+          if (err) {
+            res.json({
+              status: '1',
+              msg: err.message,
+              result: ''
+            })
+          } else {
+            res.json({
+              status: '0',
+              msg: '',
+              result: 'success'
+            })
+          }
+        })
+      }
+
+    }
+  })
+
 })
 module.exports = router;

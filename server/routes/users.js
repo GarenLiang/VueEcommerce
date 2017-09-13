@@ -211,5 +211,45 @@ router.get('/addressList',function(req,res,next){
       })
     }
   })
+});
+router.post('/setDefault', function (req, res, next) {
+  var userId = req.cookies.userId;
+  var addressId = req.body.addressId;
+  User.findOne({
+    userId: userId
+  }, function (err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      var addressList = doc.addressList;
+      addressList.forEach((item) => {
+        if (item.addressId == addressId) {
+          item.isDefault = true;
+        } else {
+          item.isDefault = false;
+
+        }
+      })
+      doc.save(function (err1, doc1) {
+        if (err) {
+          res.json({
+            status: '1',
+            msg: err.message,
+            result: ''
+          })
+        } else {
+          res.json({
+            status: '0',
+            msg: '',
+            result: ''
+          })
+        }
+      })
+    }
+  })
 })
 module.exports = router;

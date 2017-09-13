@@ -68,7 +68,7 @@
                <a class="btn btn--m" href="javascript:;" @click="mdShow=false">Close</a>
            </div>
        </modal>
-       <modal v-bind:mdShow='mdShowCart' v-on:close='closeModal'>
+       <modal v-bind:mdShow='mdShowCart' v-on:close='mdShowCart=false'>
 
             <p slot="message">
                 <img class="icon-status-ok" src="static/checked.png">

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+require('./../util/util')
 var User = require('./../models/user');
 
 /* GET users listing. */
@@ -278,6 +278,122 @@ router.post('/delAddress', function (req, res, next) {
             result: ''
           })
         }
+  })
+});
+router.post('/payMent', function (req, res, next) {
+  var userId = req.cookies.userId;
+  // 插入数据库用到的
+  // 前端传递
+  var orderTotal = req.body.orderTotal;
+  // 前端从地址参数中获取
+  var addressId = req.body.addressId
+  User.findOne({
+    userId: userId
+  }, function (err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      // 一会插入数据库中额地址信息
+      var address = '';
+      var goodsList = [];
+
+      // 获取当前用户的地址信息  判断用户所选择的地址
+      doc.addressList.forEach((item) => {
+        if (addressId == item.addressId) {
+          address = item;
+        }
+      })
+      // 获取用户购物车的购买商品
+      doc.cartList.filter((item) => {
+        if (item.checked == '1') {
+          goodsList.push(item)
+        }
+      })
+
+      //  创建日期
+      var createDate = new Date().Format('yyyy-MM-dd hh:mm:ss')
+
+      // 随机数
+      var r1 = Math.floor(Math.random() * 10);
+      var sysDate = new Date().Format('yyyyMMddhhmmss');
+      // 订单id
+      var orderId = r1 + sysDate
+
+      var order = {
+        orderId: orderId,
+        orderTotal: orderTotal,
+        addressInfo: address,
+        goodsList: goodsList,
+        orderStatus: '1',
+        createDate: createDate
+      }
+      doc.orderList.push(order);
+      doc.save(function (err1, doc1) {
+        if (err1) {
+          res.json({
+            status: '1',
+            msg: err.message,
+            result: ''
+          })
+        } else {
+          res.json({
+            status: '0',
+            msg: '',
+            result: {
+              orderId: order.orderId,
+              orderTotal: order.orderTotal
+            }
+          })
+        }
+      })
+
+    }
+  })
+});
+router.get('/orderDetail', function (req, res, next) {
+  var userId = req.cookies.userId,
+    orderId = req.param('orderId');
+  User.findOne({
+    userId: userId
+  }, function (err, userInfo) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      var orderList = userInfo.orderList
+      if (orderList.length > 0) {
+        var orderTotal = 0
+        orderList.forEach((item) => {
+          if (item.orderId == orderId) {
+            orderTotal = item.orderTotal
+          }
+        })
+        res.json({
+          status: '0',
+          msg: '很成功',
+          result: {
+            orderId: orderId,
+            orderTotal: orderTotal
+          }
+        })
+      } else {
+        res.json({
+          status: '10086',
+          msg: '无此订单',
+          result: {
+            orderId: orderId,
+            orderTotal: orderTotal
+          }
+        })
+      }
+    }
   })
 })
 module.exports = router;

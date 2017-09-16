@@ -354,4 +354,46 @@ router.post('/payMent', function (req, res, next) {
     }
   })
 });
+router.get('/orderDetail', function (req, res, next) {
+  var userId = req.cookies.userId,
+    orderId = req.param('orderId');
+  User.findOne({
+    userId: userId
+  }, function (err, userInfo) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      var orderList = userInfo.orderList
+      if (orderList.length > 0) {
+        var orderTotal = 0
+        orderList.forEach((item) => {
+          if (item.orderId == orderId) {
+            orderTotal = item.orderTotal
+          }
+        })
+        res.json({
+          status: '0',
+          msg: '很成功',
+          result: {
+            orderId: orderId,
+            orderTotal: orderTotal
+          }
+        })
+      } else {
+        res.json({
+          status: '10086',
+          msg: '无此订单',
+          result: {
+            orderId: orderId,
+            orderTotal: orderTotal
+          }
+        })
+      }
+    }
+  })
+})
 module.exports = router;
